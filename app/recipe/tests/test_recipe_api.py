@@ -50,18 +50,18 @@ class PublicRecipeAPITests(TestCase):
         self.client = APIClient()
 
     def test_auth_required(self):
-     """Test auth is required to call API"""
-     res = self.client.get(RECIPES_URL)
+        """Test auth is required to call API"""
+        res = self.client.get(RECIPES_URL)
 
-     self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateRecipeAPITests(TestCase):
     """Test authenticated API requests."""
     def setUp(self):
-      self.client = APIClient()
-      self.user = create_user(email='user@example.com', password='test123')
-      self.client.force_authenticate(self.user)
+        self.client = APIClient()
+        self.user = create_user(email='user@example.com', password='test123')
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_recipes(self):
         """Test retrieving a list of recipes."""
@@ -105,7 +105,7 @@ class PrivateRecipeAPITests(TestCase):
             'time_minutes': 30,
             'price': Decimal('5.99'),
         }
-        res = self.client.post(RECIPES_URL, payload) # POST request to /api/recipes/recipe
+        res = self.client.post(RECIPES_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipe = Recipe.objects.get(id=res.data['id'])
@@ -117,9 +117,9 @@ class PrivateRecipeAPITests(TestCase):
         """Test partial update of a recipe."""
         original_link = 'https://example.com/recipe.pdf'
         recipe = create_recipe(
-            user = self.user,
-            title = 'Sample Recipe title',
-            link = original_link,
+            user=self.user,
+            title='Sample Recipe title',
+            link=original_link,
         )
 
         payload = {'title': 'New Recipe Title'}
@@ -149,7 +149,7 @@ class PrivateRecipeAPITests(TestCase):
             'price': Decimal('2.50'),
         }
         url = detail_url(recipe.id)
-        res = self.client.put(url,payload)
+        res = self.client.put(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         recipe.refresh_from_db()
